@@ -51,3 +51,12 @@ after merging the code with main branch:
 2. delete branch from remote repo: git push origin --delete bugfix/login
 
 ### Git Rebase
+lets say, some new features has been added in main branch. but you are working on an old feature/login branch,
+that time you will add the new features of main branch to your current branch. That time you need rebase.
+Example:
+```bash
+    git checkout feature/login
+    git fetch origin 
+    git rebase origin/main
+
+```
