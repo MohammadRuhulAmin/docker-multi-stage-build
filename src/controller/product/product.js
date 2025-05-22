@@ -9,7 +9,7 @@ export const plastic_item = async (req, res) => {
   return res.json(list_item);
 };
 
-export const productV3 = async (req, res) => {
+export const kitchen_items = async (req, res) => {
   const list_item = ['cooker', 'washingmachine', 'dish', 'car', 'fridge', 'ac'];
   return res.json(list_item);
 };
