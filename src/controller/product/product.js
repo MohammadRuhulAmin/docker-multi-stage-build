@@ -24,8 +24,5 @@ export const ride_items = async (req, res) => {
   return res.json(list_item);
 };
 /**
- * 
- * 
- * 
  * hospital product lists
  */
