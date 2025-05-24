@@ -60,3 +60,12 @@ Example:
     git rebase origin/main
 
 ```
+
+### To get the latest code from the main branch of a GitHub repository into your local ruhul branch
+
+```bash
+    git fetch origin
+    git checkout ruhul
+    git merge origin/main
+
+```
