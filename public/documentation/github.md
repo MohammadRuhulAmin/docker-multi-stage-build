@@ -85,3 +85,7 @@ Example:
 
 ### Workflow Trigger documentation link: 
 [Workflow Trigger/Event List](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows)
+
+
+### SKIP CI using git commit 
+- [skip ci] Example: git commit -m "Dont allow CI Check [skip ci]"

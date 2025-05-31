@@ -1,14 +1,27 @@
 name: Pull Request Close Event Job 
 on:
   pull_request:
-    types:
+    types: # Event activity type
       - closed
+    branches:
+      - main
+      - 'dev-*' # dev-new
+      - 'feature/**' # feature/new or #feature/new/button
+    paths: # Only executes the workflow if any file changes in the following paths or directory folder
+      - 'public/documentation/*'
   workflow_dispatch:
-  jobs:
-    deploy:
-      runs-on: ubuntu-latest 
-      steps:
-        - name: "Pull Request Close Event Trigger Checking"
-          run : echo "Pull Request Close Event Trigger Checking"
-        - name: "Pull Request End print message"
-          run: echo "bye!"
+  push:
+    branches:
+      - main
+      - 'dev-*' # dev-new
+      - 'feature/**' # feature/new or #feature/new/button
+    paths-ignore: # do not run the workflow if any changes in of this files
+      - '.github/workflows/*'
+jobs:
+  deploy:
+    runs-on: ubuntu-latest 
+    steps:
+      - name: "Pull Request Close Event Trigger Checking"
+        run : echo "Pull Request Close Event Trigger Checking"
+      - name: "Pull Request End print message"
+        run: echo "bye!"
