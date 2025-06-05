@@ -1,0 +1,35 @@
+## Need to study more on 
+## https://www.udemy.com/course/github-actions-the-complete-guide/learn/lecture/34140318#content
+
+
+name: Service container workflow
+on: workflow_dispatch
+
+jobs:
+  Service-Container:
+    runs-on: ubuntu-latest
+
+    services:
+      no-sqldb:
+        image: mongo
+        env: 
+          MONGO_INITDB_ROOT_USERNAME: xx
+          MONGO_INITDB_ROOT_PASSWORD: 1223
+        ports:
+          - 27017:27017
+
+      sql-db:
+        image: mysql
+        env:
+          MYSQL_ROOT_PASSWORD: 12
+          MYSQL_USER: Tests
+          MYSQL_PASSWORD: 12
+        ports:
+          - 3306:3306
+
+    container:
+      image: node:18
+
+    steps:
+      - name: Run some command
+        run: echo "this is a command example...!"

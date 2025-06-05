@@ -1,0 +1,64 @@
+# --------------------------------------------------------------------
+### What is JOB Artifact ? 
+## Official documentation url : 
+## https://github.com/actions/upload-artifact
+# In Github Actions job artifact is a feature that helps to generate
+# a file or output or executable file to store and download or to 
+# use it for other job. 
+# -------------------------------------------------------------------
+
+name: Job Artifact Store in GitHub Repository 
+on:
+  push:
+    branches:
+      - main 
+jobs:
+  test:
+    runs-on: ubuntu-latest 
+    steps:
+      - name: Get Code 
+        uses: actions/checkout@v4
+      - name: Install dependencies
+        run: npm ci 
+  build:
+    needs: test 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code 
+        uses: actions/checkout@v4
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm # This is the home directory of the runner 
+          key: deps-node-module-${{ hashFiles('**/package-lock.json') }}   # must provide key for dependency caching
+      - name: Install dependencies
+        run: npm ci 
+      - name: Build WebSite
+        run: npm run build 
+      - name: upload artifacts 
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-file  # this is the artifact name (ref-a)
+          path: | # the location of the file  # downloading the package.json file 
+              dist
+              package.json
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download the artifact from build job workflow
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-file # to download from another job, the name must be same as given
+          # (ref-a)
+      - name: Check the working directory of the runner
+        run: pwd
+      - name: See all the files in a folder
+        run: ls -a 
+      - name: Run npm build command 
+        run:  npm run build 
+      - name: Go to dist and Execute executioner.sh file
+        run: cd dist && ./executioner.sh        
+      - name: Deploy the artifact 
+        run: echo "deploy successful..!"

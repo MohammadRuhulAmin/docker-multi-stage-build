@@ -1,0 +1,25 @@
+name: dependency caching example
+on : workflow_dispatch
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code 
+        uses: actions/checkout@v4
+      # Before installing the dependencies we will cache that
+      # The ~/.npm folder is cached using actions/cache@v3 to speed up dependency installation.
+      # The cache is not stored on a specific cloud machine — instead, it is stored in GitHub's cache storage, linked to a specific key.
+      # The key is generated based on the hash of your package-lock.json file:
+      # key: node-modules-${{ hashFiles('**/package-lock.json') }}
+      # As long as the contents of package-lock.json do not change, the key remains the same, and the cache is reused in future runs.
+      # If package-lock.json changes, a new key is generated, and a new cache is created.
+      # Each GitHub-hosted runner is a fresh virtual machine. Nothing is saved on the machine itself after the job finishes.
+      # The dependencies are restored from GitHub’s cache (not the machine) and reused across runs until the key changes.
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: node-modules-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependency
+        run: npm ci

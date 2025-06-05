@@ -91,3 +91,14 @@ Example:
 
 ### SKIP CI using git commit 
 - [skip ci] Example: git commit -m "Dont allow CI Check [skip ci]"
+
+
+
+### Dependency Caching
+- The packages to install take too much time sometimes. To reduce the time can
+be a game changer. Dependency caching can be a greate choice. If we cache those dependencies the time of deployment can dramatically reduced.
+
+
+Get Code --> Install Dependency --> Test App
+
+Get Code --> Install Dependency --> Build Project

@@ -1,0 +1,24 @@
+### One job can produce an output 
+### that will help in another job.
+### Custom actions 
+name: Job output actions
+on: workflow_dispatch
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    outputs:
+      random-number: ${{ steps.generate-random.outputs.rand }}
+    steps:
+      - name: Generate a random number
+        id: generate-random
+        run: |
+          min=50
+          max=150
+          echo "rand=$(( RANDOM % (max - min + 1) + min ))" >> "$GITHUB_OUTPUT"
+          echo "$GITHUB_OUTPUT"
+  deploy:
+    needs: test # To use a job output i have to use needs key and mention the job name
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print the rand value from test job
+        run: echo "The random number that generated from test job is ${{ needs.test.outputs.random-number }}"

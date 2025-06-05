@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/app.mjs",
     "test": "vitest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "build":"rm -rf dist && mkdir dist && cd dist && echo echo 'deployment running....' >> executioner.sh && chmod +x executioner.sh"
   },
   "author": "",
   "license": "ISC",

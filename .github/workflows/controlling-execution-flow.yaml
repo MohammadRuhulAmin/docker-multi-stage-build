@@ -1,0 +1,50 @@
+# Other dependent jobs using "needs" would be cancelled / aborted
+# if a previous job fails.
+name: Conditional Jobs Example
+on: workflow_dispatch
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    container:
+      image: node:18
+    steps:
+      - name: Hellow
+        run: echo "Hellow"
+  
+  job1:
+    runs-on: ubuntu-latest
+    container:
+      image: node:18
+    steps:
+      - name: job1
+        id: jobid-1
+        # continue-on-error helps to tell GitHub Actions to continue running subsequent steps even if this step fails
+        # continue-on-error: true  | will experiment later
+        run: exit 1 # this statement forcfully fail the step
+      - name: execute failure message
+        ## There are four functions 
+        # 1. failure() returns true if a previous step or job fails
+        # 2. cancelled() returns true if a workflow has been cancelled
+        # 3. success() return true if none of the previous steps failed
+        # 4. always() returns true
+
+        if: failure()  && steps.jobid-1.outcome == 'failure'
+        run: echo 'Process has been failed!'
+
+  job2:
+    needs: job1 
+    runs-on: ubuntu-latest
+    container:
+      image: node:18
+    steps:
+      - name: job2
+        run: echo "job2"
+  job3:
+    needs: job2 
+    runs-on: ubuntu-latest
+    container:
+      image: node:18
+    steps:
+      - name: job3
+        run: echo "job3"
